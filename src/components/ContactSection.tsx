@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Mail, Phone, Github, Linkedin, Send } from "lucide-react";
+import { Mail, Phone, Github, Linkedin, Send, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ContactSection = () => {
@@ -69,10 +69,14 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-16">
+    <section id="contact" className="scene-shell py-16">
       <div className="container mx-auto px-6 md:px-10">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
+            <div className="scene-chip">
+              <Play className="h-3.5 w-3.5" />
+              Scene 08 - Final Call
+            </div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Contact
             </p>

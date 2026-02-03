@@ -167,6 +167,65 @@ body::after {
     box-shadow: var(--shadow-card-hover);
   }
 
+  .scene-shell {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid hsl(0 0% 100% / 0.07);
+    border-bottom: 1px solid hsl(0 0% 100% / 0.07);
+    background:
+      radial-gradient(circle at 10% 20%, hsl(32 88% 62% / 0.12), transparent 38%),
+      radial-gradient(circle at 80% 15%, hsl(197 85% 52% / 0.1), transparent 40%),
+      linear-gradient(180deg, hsl(220 24% 8% / 0.88), hsl(220 24% 6% / 0.94));
+  }
+
+  .scene-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% -40%, hsl(0 0% 100% / 0.08), transparent 58%),
+      radial-gradient(ellipse at 50% 140%, hsl(0 0% 0% / 0.6), transparent 58%);
+    pointer-events: none;
+  }
+
+  .scene-shell::after {
+    content: "";
+    position: absolute;
+    inset: -30% -20%;
+    background: linear-gradient(110deg, transparent 35%, hsl(0 0% 100% / 0.06) 50%, transparent 65%);
+    animation: projectorSweep 9s linear infinite;
+    pointer-events: none;
+  }
+
+  .scene-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid hsl(0 0% 100% / 0.15);
+    border-radius: 9999px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: hsl(34 90% 84%);
+    background: hsl(0 0% 0% / 0.45);
+    backdrop-filter: blur(8px);
+  }
+
+  .scene-poster {
+    box-shadow: 0 30px 65px hsl(0 0% 0% / 0.56);
+    transition: transform 300ms ease;
+  }
+
+  .scene-poster:hover {
+    transform: translateY(-6px) scale(1.01);
+  }
+
+  .scene-pan {
+    animation: slowZoom 12s ease-in-out infinite alternate;
+    transform-origin: center;
+  }
+
   .film-grain {
     isolation: isolate;
   }
@@ -288,6 +347,24 @@ body::after {
   }
   100% {
     transform: translate(0, 0);
+  }
+}
+
+@keyframes projectorSweep {
+  from {
+    transform: translateX(-40%);
+  }
+  to {
+    transform: translateX(40%);
+  }
+}
+
+@keyframes slowZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
   }
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ComponentType } from "react";
-import { Brain, Code, Cloud, Database, Globe, Layers, Monitor, Play, Sparkles } from "lucide-react";
+import { Brain, Code, Cloud, Database, ExternalLink, Globe, Layers, Monitor, Play, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ContactSection from "@/components/ContactSection";
 
@@ -18,6 +18,7 @@ const projects = [
       "Barcode workflows cut stock discrepancies by 95%",
     ],
     tech: "Java, Spring Boot, PostgreSQL, Redis, RabbitMQ, Docker, WebSockets",
+    liveUrl: "https://the-merchant-s-ledger.vercel.app/",
     tone: "from-emerald-500/30 via-slate-900/70 to-black",
   },
   {
@@ -33,6 +34,7 @@ const projects = [
       "Centralized monitoring cut MTTD by 50%",
     ],
     tech: "Docker, Kubernetes, Spring Boot, Render, React.js, Maven",
+    liveUrl: "https://infinite-pipeline-main.vercel.app/",
     tone: "from-blue-500/30 via-slate-900/70 to-black",
   },
   {
@@ -49,6 +51,7 @@ const projects = [
       "Reduced coordination effort by 40%",
     ],
     tech: "React.js, Express.js, MongoDB, Node.js, Tailwind CSS",
+    liveUrl: "https://prolance-five.vercel.app/",
     tone: "from-amber-500/30 via-slate-900/70 to-black",
   },
 ];
@@ -233,7 +236,7 @@ const aboutQuickLinks = [
 ];
 
 const Index = () => {
-  const [activeProject, setActiveProject] = useState(projects[0].title);
+  const [activeProject, setActiveProject] = useState<string | null>(null);
   const [activeSkillIndex, setActiveSkillIndex] = useState(0);
   const [activeAboutTab, setActiveAboutTab] = useState(aboutTabs[0].id);
 
@@ -242,9 +245,10 @@ const Index = () => {
     [activeSkillIndex],
   );
   const activeProjectData = useMemo(
-    () => projects.find((project) => project.title === activeProject) ?? projects[0],
+    () => projects.find((project) => project.title === activeProject) ?? null,
     [activeProject],
   );
+  const hasActiveProject = activeProject !== null;
   const activeAboutData = useMemo(
     () => aboutTabs.find((tab) => tab.id === activeAboutTab) ?? aboutTabs[0],
     [activeAboutTab],
@@ -290,6 +294,13 @@ const Index = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = hasActiveProject ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [hasActiveProject]);
+
   return (
     <div className="relative min-h-screen bg-background text-foreground">
       <div aria-hidden className="film-grain pointer-events-none fixed inset-0 z-[90]" />
@@ -298,13 +309,10 @@ const Index = () => {
           <div className="container mx-auto px-6 md:px-10">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-[#4285F4]" />
-                  <span className="h-2 w-2 rounded-full bg-[#34A853]" />
-                  <span className="h-2 w-2 rounded-full bg-[#FBBC05]" />
-                  <span className="h-2 w-2 rounded-full bg-[#EA4335]" />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/60 text-sm font-bold text-[#ffd7a3] shadow-[0_8px_20px_rgba(0,0,0,0.35)]">
+                  S
                 </span>
-              <span className="text-lg font-semibold tracking-tight">Shriya Verma</span>
+                <span className="text-lg font-semibold tracking-tight">Shriya Verma</span>
               </div>
               <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
                 <a className="hover:text-foreground" href="#about">
@@ -341,23 +349,30 @@ const Index = () => {
             <div className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-xs text-white">
               <Monitor className="h-4 w-4" /> Portfolio
             </div>
-            <div className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-xs text-white">
+            <a
+              href="https://drive.google.com/file/d/177mH2SZuyLVbWUWP2JJR5Ro9qkWgMhBe/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-xs text-white transition hover:bg-black/90"
+            >
               <Play className="h-4 w-4" /> Resume
-            </div>
+            </a>
           </div>
         </div>
       </header>
 
       <main>
-        <section id="about" className="relative overflow-hidden py-20">
+        <section id="about" className="scene-shell relative overflow-hidden py-20">
           <div className="absolute inset-0 bg-gradient-hero opacity-95" />
           <div className="absolute inset-0 bg-dot-grid opacity-10" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,200,120,0.2),transparent_44%)]" />
           <div className="container relative z-10 mx-auto flex min-h-[70vh] flex-col justify-center px-6 md:px-10">
             <div className="relative mx-auto max-w-4xl text-center opacity-0 animate-fade-in-up" data-reveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#ffd7a3]">
-                Engineering in cinematic mode
-              </p>
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 01 - Opening
+              </div>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.4em] text-[#ffd7a3]">Engineering in cinematic mode</p>
               <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
                 Not just projects. Scenes from my engineering story.
               </h1>
@@ -372,7 +387,7 @@ const Index = () => {
             <div className="mt-12 flex justify-center">
               <div
                 id="about-panel"
-                className="w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/15 bg-black/65 shadow-[0_30px_80px_rgba(0,0,0,0.6)] backdrop-blur-md opacity-0 animate-fade-in-up stagger-1"
+                className="scene-poster w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/15 bg-black/65 shadow-[0_30px_80px_rgba(0,0,0,0.6)] backdrop-blur-md opacity-0 animate-fade-in-up stagger-1"
                 data-reveal
               >
                 <div className="flex flex-wrap items-center gap-3 border-b border-white/10 px-6 py-4 text-xs text-white/60">
@@ -443,9 +458,13 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="projects" className="py-16" data-reveal>
+        <section id="projects" className="scene-shell py-16" data-reveal>
           <div className="container mx-auto px-6 md:px-10">
             <div className="mb-10 text-center">
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 02 - Build Montage
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
                 Projects
               </p>
@@ -453,44 +472,122 @@ const Index = () => {
               <p className="mx-auto mt-3 max-w-2xl text-sm text-white/60">
                 Real-world builds with measurable outcomes and production-grade architecture.
               </p>
+              <p className="mt-4 text-xs uppercase tracking-[0.2em] text-[#ffd7a3]">
+                Click any project to open full-screen scene
+              </p>
             </div>
             <div className="grid items-start gap-6 lg:grid-cols-3">
-              {projects.map((project) => (
-                <div
+              {projects.map((project) => {
+                const isActive = activeProject === project.title;
+
+                return (
+                <button
                   key={project.title}
-                  className="rounded-3xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-2"
+                  type="button"
+                  onClick={() => setActiveProject(project.title)}
+                  aria-pressed={isActive}
+                  className="scene-poster col-span-12 overflow-hidden rounded-3xl border border-white/15 text-left shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-all duration-700 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] md:col-span-6 lg:col-span-1"
                   style={{
                     backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0.8) 100%), url(${project.image})`,
-                    backgroundSize: "100% 220px",
+                    backgroundSize: "100% 200px",
                     backgroundPosition: "center top",
                     backgroundRepeat: "no-repeat",
                   }}
                 >
-                  <div className="pt-[220px]">
+                  <div className="pt-[200px]">
                     <div className="rounded-b-3xl border-t border-white/10 bg-black/70 p-6 backdrop-blur-sm">
                       <p className="text-xs text-white/60">{project.period}</p>
                       <h3 className="mt-2 text-xl font-semibold text-white">{project.title}</h3>
                       <p className="mt-2 text-sm text-white/60">{project.description}</p>
-                      <ul className="mt-4 space-y-2 text-xs text-white/60">
-                        {project.highlights.map((item) => (
-                          <li key={item} className="flex items-start gap-2">
-                            <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <p className="mt-4 text-xs text-white/50">Tech stack: {project.tech}</p>
+                      <p className="mt-3 text-xs uppercase tracking-[0.2em] text-white/50">Tap to open scene</p>
                     </div>
                   </div>
-                </div>
-              ))}
+                </button>
+              )})}
             </div>
           </div>
         </section>
 
-        <section id="stack" className="py-16" data-reveal>
+        {activeProjectData && (
+          <div className="fixed inset-0 z-[120] bg-black/95 backdrop-blur-sm">
+            <button
+              type="button"
+              aria-label="Close project scene"
+              onClick={() => setActiveProject(null)}
+              className="absolute right-6 top-6 z-10 rounded-full border border-white/20 bg-black/60 p-3 text-white transition hover:bg-black"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <div className="h-full overflow-y-auto">
+              <div className="relative min-h-screen">
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 58%, rgba(0,0,0,0.95) 100%), url(${activeProjectData.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+                <div className="relative z-[1] container mx-auto px-6 pb-20 pt-24 md:px-10">
+                  <div className="mx-auto max-w-6xl rounded-[32px] border border-white/15 bg-black/55 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-xl md:p-10">
+                    <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em] text-[#ffd7a3]">
+                      <span className="scene-chip">Project Scene</span>
+                      <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-white/70">{activeProjectData.period}</span>
+                      <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-white/70">{activeProjectData.label}</span>
+                    </div>
+                    <h3 className="mt-6 text-4xl text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] sm:text-6xl">
+                      {activeProjectData.title}
+                    </h3>
+                    <p className="mt-4 max-w-4xl text-base leading-relaxed text-white/85 md:text-lg">
+                      {activeProjectData.description}
+                    </p>
+
+                    <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+                      <div className="rounded-3xl border border-white/15 bg-black/40 p-6">
+                        <p className="text-xs uppercase tracking-[0.2em] text-white/60">Highlights</p>
+                        <ul className="mt-4 space-y-3 text-sm text-white/85">
+                          {activeProjectData.highlights.map((item) => (
+                            <li key={item} className="flex items-start gap-3">
+                              <span className="mt-1.5 h-2 w-2 rounded-full bg-primary" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="rounded-3xl border border-white/15 bg-black/40 p-6">
+                        <p className="text-xs uppercase tracking-[0.2em] text-white/60">Tech stack</p>
+                        <p className="mt-4 text-sm leading-relaxed text-white/85">{activeProjectData.tech}</p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                          <Button className="rounded-full bg-primary px-5 font-semibold text-white hover:bg-primary/90" asChild>
+                            <a href={activeProjectData.liveUrl} target="_blank" rel="noopener noreferrer">
+                              Watch Live
+                              <ExternalLink className="ml-2 h-4 w-4" />
+                            </a>
+                          </Button>
+                          <Button
+                            variant="outline"
+                            className="rounded-full border-white/30 bg-black/40 text-white hover:bg-white/10"
+                            onClick={() => setActiveProject(null)}
+                          >
+                            Close Scene
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <section id="stack" className="scene-shell py-16" data-reveal>
           <div className="container mx-auto px-6 md:px-10">
             <div className="text-center">
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 03 - Toolkit Reveal
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
                 My skills
               </p>
@@ -535,9 +632,13 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="training" className="py-16" data-reveal>
+        <section id="training" className="scene-shell py-16" data-reveal>
           <div className="container mx-auto px-6 md:px-10">
             <div className="mb-10 text-center">
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 04 - Training Arc
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
                 Training
               </p>
@@ -588,12 +689,12 @@ const Index = () => {
                   <img
                     src="/training.png"
                     alt="Training certificate 1"
-                    className="absolute inset-0 h-full w-full rounded-2xl border border-white/10 object-cover shadow-[0_16px_32px_rgba(0,0,0,0.4)] animate-fade-swap"
+                    className="scene-pan absolute inset-0 h-full w-full rounded-2xl border border-white/10 object-cover shadow-[0_16px_32px_rgba(0,0,0,0.4)] animate-fade-swap"
                   />
                   <img
                     src="/tarining2.png"
                     alt="Training certificate 2"
-                    className="absolute inset-0 h-full w-full rounded-2xl border border-white/10 object-cover shadow-[0_16px_32px_rgba(0,0,0,0.4)] animate-fade-swap-delayed"
+                    className="scene-pan absolute inset-0 h-full w-full rounded-2xl border border-white/10 object-cover shadow-[0_16px_32px_rgba(0,0,0,0.4)] animate-fade-swap-delayed"
                   />
                 </div>
                 <div className="absolute bottom-4 text-xs uppercase tracking-[0.2em] text-white/60">
@@ -604,9 +705,13 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="certificates" className="py-16" data-reveal>
+        <section id="certificates" className="scene-shell py-16" data-reveal>
           <div className="container mx-auto px-6 md:px-10">
             <div className="mb-10 text-center">
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 05 - Credentials Roll
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
                 Certificates
               </p>
@@ -616,7 +721,7 @@ const Index = () => {
               {certificates.map((cert) => (
                 <div
                   key={cert.title}
-                  className="overflow-hidden rounded-3xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-1"
+                  className="scene-poster overflow-hidden rounded-3xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-1"
                   style={{
                     backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.85) 100%), url(${cert.image})`,
                     backgroundSize: "100% 220px",
@@ -653,9 +758,13 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="achievements" className="py-16" data-reveal>
+        <section id="achievements" className="scene-shell py-16" data-reveal>
           <div className="container mx-auto px-6 md:px-10">
             <div className="mb-10 text-center">
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 06 - Wins
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
                 Achievements
               </p>
@@ -665,7 +774,7 @@ const Index = () => {
               {achievements.map((item) => (
                 <div
                   key={item.text}
-                  className="overflow-hidden rounded-3xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-1"
+                  className="scene-poster overflow-hidden rounded-3xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-1"
                 >
                   <div className="rounded-b-3xl border-t border-white/10 bg-black/70 p-6 backdrop-blur-sm">
                     {item.text}
@@ -676,9 +785,13 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="education" className="py-16" data-reveal>
+        <section id="education" className="scene-shell py-16" data-reveal>
           <div className="container mx-auto px-6 md:px-10">
             <div className="mb-10 text-center">
+              <div className="scene-chip mx-auto mb-4">
+                <Play className="h-3.5 w-3.5" />
+                Scene 07 - Credits
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
                 Education
               </p>
@@ -688,7 +801,7 @@ const Index = () => {
               {education.map((item) => (
                 <div
                   key={`${item.school}-${item.period}`}
-                  className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-1"
+                  className="scene-poster rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between text-xs text-white/60">
                     <span>{item.location}</span>
