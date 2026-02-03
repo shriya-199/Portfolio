@@ -3,6 +3,7 @@ import { Mail, Phone, Github, Linkedin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ContactSection = () => {
+  const apiBaseUrl = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [formState, setFormState] = useState({
     name: "",
@@ -50,7 +51,7 @@ const ContactSection = () => {
     setStatus("sending");
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(`${apiBaseUrl}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formState),
